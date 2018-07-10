@@ -21,7 +21,7 @@ public class CharController : MonoBehaviour {
         //Turn the input into a "direction"
         Vector3 inputDir = new Vector3(xInput, 0, zInput);
         inputDir = inputDir.normalized;
-        print(inputDir);
+        //print(inputDir);
 
         //
         if (inputDir != Vector3.zero)
