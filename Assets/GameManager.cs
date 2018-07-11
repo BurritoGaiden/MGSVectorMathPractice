@@ -26,11 +26,26 @@ public class GameManager : MonoBehaviour {
 
     public bool radioConversationAvailable;
 
+    public int currentLevel;
+
+    public GameObject cam;
+
+    //public Event 
+
 	// Use this for initialization
 	void Start () {
         radiosWithDialogue = new Dictionary<float, float>();
+        CharController.OnTrigger += LevelTransition;
         StartCoroutine(GameScript());        
 	}
+
+    public void LevelTransition(Vector3 camDest, Vector3 playerDest) {
+        print("level transition now");
+        //print(transitionValue);
+
+        cam.transform.position = camDest;
+        playerCharacter.transform.position = playerDest;
+    }
 
     public void SwitchToRadioConversation(string whichFile) {
         readTextFile(whichFile);
@@ -55,32 +70,38 @@ public class GameManager : MonoBehaviour {
             RadioMenuLogic();
         }
         else if (thisPlayerControlState == PlayerControlState.Menu) {
-            //Changing Choice
-            if (Input.GetKeyDown(KeyCode.W))
-            {
-                if (gameMenuIndex > 0) gameMenuIndex--;
-                else if (gameMenuIndex == 0) gameMenuIndex = 2;
-            }
-            else if (Input.GetKeyDown(KeyCode.S))
-            {
-                if (gameMenuIndex < 2) gameMenuIndex++;
-                else if (gameMenuIndex == 2) gameMenuIndex = 0;
-            }
-
-            //Backing out
-            else if (Input.GetKeyDown(KeyCode.U))
-            {
-                thisPlayerControlState = PlayerControlState.Player;
-            }
-            
-            //Choosing
-            else if (Input.GetKeyDown(KeyCode.I)) {
-                if (gameMenuIndex == 2) {
-                    thisPlayerControlState = PlayerControlState.Radio;
-                }
-            }
+            GameMenuLogic();
         }
 	}
+
+    public void GameMenuLogic() {
+        //Changing Choice
+        if (Input.GetKeyDown(KeyCode.W))
+        {
+            if (gameMenuIndex > 0) gameMenuIndex--;
+            else if (gameMenuIndex == 0) gameMenuIndex = 2;
+        }
+        else if (Input.GetKeyDown(KeyCode.S))
+        {
+            if (gameMenuIndex < 2) gameMenuIndex++;
+            else if (gameMenuIndex == 2) gameMenuIndex = 0;
+        }
+
+        //Backing out
+        else if (Input.GetKeyDown(KeyCode.U))
+        {
+            thisPlayerControlState = PlayerControlState.Player;
+        }
+
+        //Choosing
+        else if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (gameMenuIndex == 2)
+            {
+                thisPlayerControlState = PlayerControlState.Radio;
+            }
+        }
+    }
 
     public void PlayerControlLogic() {
         if (playerCharacter != null)

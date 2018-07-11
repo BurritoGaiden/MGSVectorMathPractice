@@ -10,6 +10,9 @@ public class CharController : MonoBehaviour {
 
     public bool left, up, right, down;
 
+    public delegate void TriggerAction(Vector3 destination, Vector3 playerDestination);
+    public static event TriggerAction OnTrigger;
+
 	// Use this for initialization
 	void Start () {
 		
@@ -62,5 +65,13 @@ public class CharController : MonoBehaviour {
 
         //Move Character forward
         transform.position += transform.forward * speed * Time.deltaTime;
+    }
+
+    void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.tag == "Transition") {
+            //print("the character collided with" + " " + other.gameObject.name);
+            OnTrigger(other.GetComponent<TransitionScript>().cameraDestination, other.GetComponent<TransitionScript>().playerDestination);
+        }
     }
 }
