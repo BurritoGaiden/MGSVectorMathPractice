@@ -44,7 +44,8 @@ public class CamController : MonoBehaviour {
         Vector3 direction = ZeroOutThisVectorY(player.transform.position) - ZeroOutThisVectorY(transform.position);
         float angle = Vector3.Angle(direction, transform.forward);
 
-        print(angle + " Unity Angle");
+        //this one works
+        //print(angle + " Unity Angle");
         if (angle < fovAngle * .5f)
         {
             //print("in fov");
@@ -56,7 +57,7 @@ public class CamController : MonoBehaviour {
         {
             Vector3 playerDir = ZeroOutThisVectorY(player.transform.position) - ZeroOutThisVectorY(transform.position);
             float targAng = AngleBetweenTwoVectors(direction, transform.forward);
-            print(targAng + " my angle");
+            //print(targAng + " my angle");
             //string tA = targAng.ToString();
 
             //if (targAng < fovAngle) {
@@ -69,7 +70,7 @@ public class CamController : MonoBehaviour {
         {
             Vector3 playerDir = ZeroOutThisVectorY(player.transform.position) - ZeroOutThisVectorY(transform.position);
             float targAng = SimpleAngle(direction, transform.forward);
-            print(targAng + " my simple angle");
+            //print(targAng + " my simple angle");
             //string tA = targAng.ToString();
 
             //if (targAng < fovAngle) {
