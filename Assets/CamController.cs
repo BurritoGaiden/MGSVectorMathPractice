@@ -54,9 +54,6 @@ public class CamController : MonoBehaviour {
         }
         else inFOV = false;
 
-        //print("Player in FOV?: " + inFOV);
-        //print("Player in Range?: " + charInRange);
-        //print("Player Line of Sight?: " + unbrokenLineOfSight);
         if (inFOV && unbrokenLineOfSight && charInRange) {
             print("Player seen");
             alertStatus();
@@ -67,26 +64,12 @@ public class CamController : MonoBehaviour {
         {
             Vector3 playerDir = ZeroOutThisVectorY(player.transform.position) - ZeroOutThisVectorY(transform.position);
             float targAng = AngleBetweenTwoVectors(direction, transform.forward);
-            //print(targAng + " my angle");
-            //string tA = targAng.ToString();
-
-            //if (targAng < fovAngle) {
-            //    tA += " is inside fov";
-            //}
-            //print(tA);
         }
 
         if (Input.GetKey(KeyCode.N))
         {
             Vector3 playerDir = ZeroOutThisVectorY(player.transform.position) - ZeroOutThisVectorY(transform.position);
             float targAng = SimpleAngle(direction, transform.forward);
-            //print(targAng + " my simple angle");
-            //string tA = targAng.ToString();
-
-            //if (targAng < fovAngle) {
-            //    tA += " is inside fov";
-            //}
-            //print(tA);
         }
     }
 

@@ -9,11 +9,14 @@ public class CharController : MonoBehaviour {
 
     public bool left, up, right, down;
 
-    public delegate void TriggerAction(Vector3 destination, Vector3 playerDestination);
+    public delegate void TriggerAction(GameObject trigger);
     public static event TriggerAction OnTrigger;
 
     public delegate void ItemPickup(GameObject Item);
     public static event ItemPickup itemPickup;
+
+    //public delegate void TransitionTrigger(GameObject Item);
+    //public static event ItemPickup itemPickup;
 
     CharacterController controller;
 
@@ -72,9 +75,7 @@ public class CharController : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Transition") {
-            //Change this to an event that calls the game manager to change the level
-            //Add tracking of current room to the function
-            OnTrigger(other.GetComponent<TransitionScript>().cameraDestination, other.GetComponent<TransitionScript>().playerDestination);
+            OnTrigger(other.gameObject);
         }
 
         if (other.gameObject.tag == "Item") {

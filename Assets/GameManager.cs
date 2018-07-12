@@ -125,12 +125,13 @@ public class GameManager : MonoBehaviour {
         }
     }
 
-    public void LevelTransition(Vector3 camDest, Vector3 playerDest) {
-        //print("level transition now");
-        //print(transitionValue);
-
-        cam.transform.position = camDest;
-        playerCharacter.transform.position = playerDest;
+    public void LevelTransition(GameObject trigger) {
+        if (roomArray[currentRoomIndex] == 1) {
+            roomArray[currentRoomIndex] = 0;
+        }
+        currentRoomIndex = trigger.GetComponent<TransitionScript>().destinationRoomIndex;
+        cam.transform.position = trigger.GetComponent<TransitionScript>().cameraDestination;
+        playerCharacter.transform.position = trigger.GetComponent<TransitionScript>().playerDestination;
     }
 
     public void SwitchToRadioConversation(string whichFile) {
@@ -150,6 +151,7 @@ public class GameManager : MonoBehaviour {
         if (thisPlayerControlState == PlayerControlState.Player)
         {
             PlayerControlLogic();
+            roomManager();
         }
         else if (thisPlayerControlState == PlayerControlState.Radio)
         {
@@ -309,6 +311,8 @@ public class GameManager : MonoBehaviour {
         }
 
         menuText.text = "Current Weapon: " + playerWeapons[weaponMenuIndex].name + "\n" + "Current Equipment: " + playerEquipments[equipMenuIndex].name;
+        string alertString = roomArray[currentRoomIndex] == 1 ? "Alert" : "Not Alert";
+        menuText.text += "\n" + alertString;
     }
 
     void WeaponAbility() {

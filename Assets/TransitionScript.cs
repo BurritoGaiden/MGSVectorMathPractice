@@ -6,6 +6,7 @@ public class TransitionScript : MonoBehaviour {
 
     public Vector3 cameraDestination;
     public Vector3 playerDestination;
+    public int destinationRoomIndex;
 	// Use this for initialization
 	void Start () {
 		
