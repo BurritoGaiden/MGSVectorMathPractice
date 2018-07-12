@@ -28,14 +28,12 @@ public class CamController : MonoBehaviour {
         RaycastHit hit;
         Physics.Linecast(transform.position, player.transform.position, out hit);
 
-        if (hit.collider.transform.parent != null)
+        if (hit.collider.tag == "Player")
         {
-            if (hit.collider.transform.parent.gameObject == player)
-            {
-                //print("Can see Snake");
-                unbrokenLineOfSight = true;
-            }
+
+            unbrokenLineOfSight = true;
         }
+        else unbrokenLineOfSight = false;
 
         //Check if Player is within angle/fov
         //float dot = player.transform.position * player.transform.position * Mathf.Cos(player.transform.position, transform.position);
@@ -52,6 +50,12 @@ public class CamController : MonoBehaviour {
             inFOV = true;
         }
         else inFOV = false;
+
+        //print("Player in FOV?: " + inFOV);
+        //print("Player in Range?: " + charInRange);
+        //print("Player Line of Sight?: " + unbrokenLineOfSight);
+        if (inFOV && unbrokenLineOfSight && charInRange)
+            //print("Player seen");
 
         if (Input.GetKey(KeyCode.Space))
         {

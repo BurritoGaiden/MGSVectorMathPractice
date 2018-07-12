@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CharController : MonoBehaviour {
 
-    public Transform head, topHalf, bottomHalf;
     public float xInput, zInput;
     public float walkSpeed = 2, runSpeed = 6;
 
@@ -13,9 +12,14 @@ public class CharController : MonoBehaviour {
     public delegate void TriggerAction(Vector3 destination, Vector3 playerDestination);
     public static event TriggerAction OnTrigger;
 
+    public delegate void ItemPickup(GameObject Item);
+    public static event ItemPickup itemPickup;
+
+    CharacterController controller;
+
 	// Use this for initialization
 	void Start () {
-		
+        controller = GetComponent<CharacterController>();
 	}
 	
 	// Update is called once per frame
@@ -39,10 +43,6 @@ public class CharController : MonoBehaviour {
 	}
 
     void InputLogic() {
-
-
-
-
         if (left) {
             xInput = -1;
         } else if (right) {
@@ -64,7 +64,9 @@ public class CharController : MonoBehaviour {
         float speed = ((running) ? runSpeed : walkSpeed) * inputDir.magnitude;
 
         //Move Character forward
-        transform.position += transform.forward * speed * Time.deltaTime;
+        Vector3 velocity = transform.forward * speed;
+        controller.Move(velocity * Time.deltaTime);
+        //transform.position += transform.forward * speed * Time.deltaTime;
     }
 
     void OnTriggerEnter(Collider other)
@@ -73,5 +75,14 @@ public class CharController : MonoBehaviour {
             //print("the character collided with" + " " + other.gameObject.name);
             OnTrigger(other.GetComponent<TransitionScript>().cameraDestination, other.GetComponent<TransitionScript>().playerDestination);
         }
+
+        if (other.gameObject.tag == "Item") {
+            if(other.GetComponent<Ammo>() || other.GetComponent<Weapon>() || other.GetComponent<Equipment>())
+            {
+                itemPickup(other.gameObject);
+            }
+        }
     }
+
+    
 }
