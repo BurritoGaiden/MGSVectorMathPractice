@@ -72,7 +72,8 @@ public class CharController : MonoBehaviour {
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Transition") {
-            //print("the character collided with" + " " + other.gameObject.name);
+            //Change this to an event that calls the game manager to change the level
+            //Add tracking of current room to the function
             OnTrigger(other.GetComponent<TransitionScript>().cameraDestination, other.GetComponent<TransitionScript>().playerDestination);
         }
 

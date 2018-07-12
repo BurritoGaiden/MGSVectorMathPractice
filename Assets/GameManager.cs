@@ -36,6 +36,11 @@ public class GameManager : MonoBehaviour {
 
     public GameObject cam;
 
+    public float weaponWaitTime;
+
+    public int[] roomArray = new int[30];
+    public int currentRoomIndex;
+
     //public Event 
 
 	// Use this for initialization
@@ -43,12 +48,26 @@ public class GameManager : MonoBehaviour {
         //radiosWithDialogue = new Dictionary<float, float>();
         CharController.itemPickup += CheckItem;
         CharController.OnTrigger += LevelTransition;
+        CamController.alertStatus += alert;
 
         playerEquipments.Add(new PlayerEquipment("NONE"));
         playerWeapons.Add(new PlayerWeapon("NONE", WeaponType.melee, 0));
         playerWeapons.Add(new PlayerWeapon("CQC", WeaponType.melee, 5));
+
+        weaponWaitTime = 3;
+
         StartCoroutine(GameScript());
 	}
+
+    public void alert() {
+        //Enemies in this room will attack the Player
+        //This room will spawn enemies at all of its entrances while alert
+        roomArray[currentRoomIndex] = 1;
+    }
+
+    public void roomManager() {
+
+    }
 
     public void CheckItem(GameObject item) {
         thisPlayerControlState = PlayerControlState.Null;
@@ -269,9 +288,35 @@ public class GameManager : MonoBehaviour {
                 thisPlayerControlState = PlayerControlState.Menu;
                 gameMenuIndex = 0;
             }
+            else if (Input.GetKey(KeyCode.I))
+            {
+                if (weaponWaitTime == 3)
+                {
+                    WeaponAbility();
+                    weaponWaitTime = 0;
+                }
+            }
+            else if (Input.GetKey(KeyCode.O))
+            {
+
+            }
+            if (weaponWaitTime < 3) {
+                weaponWaitTime += Time.deltaTime;
+                if (weaponWaitTime > 3) {
+                    weaponWaitTime = 3;
+                }
+            }
         }
 
-        menuText.text = "";
+        menuText.text = "Current Weapon: " + playerWeapons[weaponMenuIndex].name + "\n" + "Current Equipment: " + playerEquipments[equipMenuIndex].name;
+    }
+
+    void WeaponAbility() {
+        print("I did it");
+    }
+
+    void EquipmentEffect() {
+
     }
 
     public void RadioMenuLogic() {
@@ -368,6 +413,10 @@ public class GameManager : MonoBehaviour {
 
         print("done with the reminder");
     }
+}
+
+public enum AlertState {
+    alert, guard
 }
 
 public enum PlayerControlState {

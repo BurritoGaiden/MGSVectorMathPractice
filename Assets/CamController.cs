@@ -8,8 +8,11 @@ public class CamController : MonoBehaviour {
     public float fovAngle;
     public float fovRange;
 
-	// Use this for initialization
-	void Start () {
+    public delegate void AlertStatusDelegate();
+    public static event AlertStatusDelegate alertStatus;
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
@@ -54,8 +57,11 @@ public class CamController : MonoBehaviour {
         //print("Player in FOV?: " + inFOV);
         //print("Player in Range?: " + charInRange);
         //print("Player Line of Sight?: " + unbrokenLineOfSight);
-        if (inFOV && unbrokenLineOfSight && charInRange)
-            //print("Player seen");
+        if (inFOV && unbrokenLineOfSight && charInRange) {
+            print("Player seen");
+            alertStatus();
+        }
+            
 
         if (Input.GetKey(KeyCode.Space))
         {
