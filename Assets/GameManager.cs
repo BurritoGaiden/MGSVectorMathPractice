@@ -28,6 +28,8 @@ public class GameManager : MonoBehaviour {
     public static List<PlayerWeapon> playerWeapons = new List<PlayerWeapon>();
     public static List<PlayerEquipment> playerEquipments = new List<PlayerEquipment>();
 
+    public static List<Enemy> enemies = new List<Enemy>();
+
     public PlayerAmmo thisPlayerAmmo = new PlayerAmmo(10, 30, 0, 3, 2);
     
     public bool radioConversationAvailable;
@@ -56,6 +58,8 @@ public class GameManager : MonoBehaviour {
 
         weaponWaitTime = 3;
 
+        enemies.Add(GameObject.Find("Enemy").GetComponent<Enemy>());
+
         StartCoroutine(GameScript());
 	}
 
@@ -63,6 +67,11 @@ public class GameManager : MonoBehaviour {
         //Enemies in this room will attack the Player
         //This room will spawn enemies at all of its entrances while alert
         roomArray[currentRoomIndex] = 1;
+        for (int i = 0; i < enemies.Count; i++) {
+            if (enemies[i].roomIndex == currentRoomIndex) {
+                enemies[i].EnablePathfinder();
+            }
+        }
     }
 
     public void roomManager() {
@@ -132,6 +141,13 @@ public class GameManager : MonoBehaviour {
         currentRoomIndex = trigger.GetComponent<TransitionScript>().destinationRoomIndex;
         cam.transform.position = trigger.GetComponent<TransitionScript>().cameraDestination;
         playerCharacter.transform.position = trigger.GetComponent<TransitionScript>().playerDestination;
+
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            
+            enemies[i].DisablePathfinder();
+            enemies[i].transform.position = enemies[i].startingPos;
+        }
     }
 
     public void SwitchToRadioConversation(string whichFile) {
