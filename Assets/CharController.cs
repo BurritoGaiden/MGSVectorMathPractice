@@ -9,15 +9,6 @@ public class CharController : MonoBehaviour {
 
     public bool left, up, right, down;
 
-    public delegate void TriggerAction(GameObject trigger);
-    public static event TriggerAction OnTrigger;
-
-    public delegate void ItemPickup(GameObject Item);
-    public static event ItemPickup itemPickup;
-
-    //public delegate void TransitionTrigger(GameObject Item);
-    //public static event ItemPickup itemPickup;
-
     CharacterController controller;
 
 	// Use this for initialization
@@ -33,9 +24,7 @@ public class CharController : MonoBehaviour {
         //Turn the input into a "direction"
         Vector3 inputDir = new Vector3(xInput, 0, zInput);
         inputDir = inputDir.normalized;
-        //print(inputDir);
 
-        //
         if (inputDir != Vector3.zero)
         {
             //Turn Character to face input direction
@@ -69,22 +58,5 @@ public class CharController : MonoBehaviour {
         //Move Character forward
         Vector3 velocity = transform.forward * speed;
         controller.Move(velocity * Time.deltaTime);
-        //transform.position += transform.forward * speed * Time.deltaTime;
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.gameObject.tag == "Transition") {
-            OnTrigger(other.gameObject);
-        }
-
-        if (other.gameObject.tag == "Item") {
-            if(other.GetComponent<Ammo>() || other.GetComponent<Weapon>() || other.GetComponent<Equipment>())
-            {
-                itemPickup(other.gameObject);
-            }
-        }
-    }
-
-    
+    }   
 }

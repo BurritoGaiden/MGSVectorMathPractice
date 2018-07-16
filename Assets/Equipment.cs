@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Equipment : MonoBehaviour {
-    public string type;
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+    public string name;
+    public EquipType type;
+
+    public Equipment(string dName, EquipType dType)
+    {
+        name = dName;
+        type = dType;
+    }
 }
+
+public enum EquipType { melee, ranged };

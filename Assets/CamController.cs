@@ -11,6 +11,11 @@ public class CamController : MonoBehaviour {
     public delegate void AlertStatusDelegate();
     public static event AlertStatusDelegate alertStatus;
 
+    public bool isSoldier;
+
+    public float currentCooldown;
+    public float cooldown;
+
     // Use this for initialization
     void Start () {
 		
@@ -57,6 +62,20 @@ public class CamController : MonoBehaviour {
         if (inFOV && unbrokenLineOfSight && charInRange) {
             print("Player seen");
             alertStatus();
+
+            if (isSoldier)
+            {
+                if (currentCooldown < cooldown)
+                {
+                    currentCooldown += Time.deltaTime;
+                    if (currentCooldown > cooldown)
+                        currentCooldown = cooldown;
+                }
+                if (currentCooldown == cooldown) {
+                    print("shoot");
+                    currentCooldown = 0;
+                }
+            }
         }
             
 

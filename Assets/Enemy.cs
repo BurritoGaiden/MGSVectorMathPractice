@@ -5,23 +5,28 @@ using UnityEngine.AI;
 
 public class Enemy : MonoBehaviour {
 
-    NavMeshAgent pathfinder;
+    public NavMeshAgent pathfinder;
     public Transform target;
     public int roomIndex;
     public Vector3 startingPos;
+    public Quaternion startingRot;
+    public bool active;
 
 	// Use this for initialization
 	void Start () {
         pathfinder = GetComponent<NavMeshAgent>();
         target = GameObject.FindGameObjectWithTag("Player").transform;
         startingPos = transform.position;
-        DisablePathfinder();
+        startingRot = transform.rotation;
+        pathfinder.SetDestination(transform.position);
+        //active = false;
+        //DisablePathfinder();
     }
 	
 	// Update is called once per frame
 	void Update () {
-        pathfinder.SetDestination(target.position);       
-	}
+        
+    }
 
     public void EnablePathfinder() {
         pathfinder.updatePosition = true;
