@@ -37,7 +37,7 @@ public class CharInventory : MonoBehaviour {
     public void UseEquipment() { }
 
     public void UseWeapon() {
-        print()
+        print("Weapon Used");
     }
 
     public void AddWeapon(GameObject item)

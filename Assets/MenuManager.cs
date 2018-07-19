@@ -8,7 +8,6 @@ public class MenuManager : MonoBehaviour {
     public GameplayManager gm;
 
     public bool radioConversationAvailable;
-    public float radioValue;
     public bool inConvo;
     public Dictionary<float, float> radiosWithDialogue = new Dictionary<float, float>();
 
@@ -17,20 +16,41 @@ public class MenuManager : MonoBehaviour {
     public int gameMenuIndex;
     public int equipMenuIndex;
     public int weapMenuIndex;
+    public float transceiverFreq;
 
     public TextAsset textFile;
     public List<string> textList;
     public int currentTextLine;
+
+    public MenuState thisMenuState = MenuState.GameMenu;
 
     void Start() {
         gm = GetComponent<GameplayManager>();
     }
 
     void Update() {
-        weapMenuIndex = gm.pc.GetComponent<CharInventory>().weaponIndex;
-        equipMenuIndex = gm.pc.GetComponent<CharInventory>().equipIndex;
+        if (gm.GetComponent<GameplayManager>()){
+            if (gm.pc && gm.thisPlayerControlState == PlayerControlState.Menu) { 
+                weapMenuIndex = gm.pc.GetComponent<CharInventory>().weaponIndex;
+                equipMenuIndex = gm.pc.GetComponent<CharInventory>().equipIndex;
 
-        WhichMenuCheck();
+                switch (thisMenuState) {
+                    case MenuState.GameMenu:
+                        GameMenuLogic();
+                        break;
+                    case MenuState.EquipMenu:
+                        EquipmentMenuLogic();
+                        break;
+                    case MenuState.WeaponMenu:
+                        WeaponMenuLogic();
+                        break;
+                    case MenuState.TransceiverMenu:
+                        TransceiverMenuLogic();
+                        break;
+                }
+                //WhichMenuCheck();
+            }
+        }
     }
 
     public void WhichMenuCheck() {
@@ -91,7 +111,7 @@ public class MenuManager : MonoBehaviour {
             }
         }
     }
-
+    /*
     public void RadioMenuLogic()
     {
         if (!inConvo)
@@ -144,7 +164,7 @@ public class MenuManager : MonoBehaviour {
 
         }        
     }
-
+    */
     public void SwitchToRadioConversation(string whichFile)
     {
         readTextFile(whichFile);
@@ -156,4 +176,66 @@ public class MenuManager : MonoBehaviour {
         textFile = Resources.Load(nameOfFileToRead) as TextAsset;
         textList = textFile.text.Split('\n').ToList();
     }
+
+    public void GameMenuLogic() {
+        //up moves the gameindex up
+        //down moves the index down
+        //U moves the game back to gameplay
+        //I moves the game to the selected option
+
+        if (up)
+        {
+            if (gameMenuIndex > 0) gameMenuIndex--;
+            else if (gameMenuIndex == 0) gameMenuIndex = 2;
+        }
+        else if (down)
+        {
+            if (gameMenuIndex < 2) gameMenuIndex++;
+            else if (gameMenuIndex == 2) gameMenuIndex = 0;
+        }
+        else if (left)
+        {
+            //tell game to go back to gameplay
+        }
+        else if (right) {
+            //tell the game to go to whatever menu you have queued up
+            ForwardMenuMove();
+        }
+    }
+
+    public void ForwardMenuMove() {
+        if (gameMenuIndex == 0) {
+            thisMenuState = MenuState.WeaponMenu;
+        } else if (gameMenuIndex == 1) {
+            thisMenuState = MenuState.EquipMenu;
+        } else if (gameMenuIndex == 2) {
+            thisMenuState = MenuState.TransceiverMenu;
+        }
+    }
+
+    public void BackwardMenuMove() {
+
+    }
+
+    public void WeaponMenuLogic() {
+        //up moves the weaponindex up
+        //down moves the weaponindex down
+        //U moves the game back to the main menu
+    }
+
+    public void EquipmentMenuLogic() {
+        //up moves the equipindexup
+        //down moves the equipindexdown
+        //U moves the game back to the main menu
+    }
+
+    public void TransceiverMenuLogic() {
+        //left tunes the transceiver down
+        //right turnes the transceiver up
+        //up checks that frequency for a convo
+        //U moves the game back to the main menu
+    }
 }
+
+public enum MenuState{ GameMenu, EquipMenu, WeaponMenu, TransceiverMenu, Null}
+public enum TransceiverMenuState { TransceiverNull, TransceiverSend, TransceiverReceiving}
