@@ -24,37 +24,43 @@ public class GameplayManager : MonoBehaviour {
         StartCoroutine(GameScript());
     }
 
+    void Attack() {
+        print("Attack");
+    }
+
     // Update is called once per frame
     void Update()
     {
+
+        
         switch (thisPlayerControlState)
         {
             case PlayerControlState.Player:
                 PlayerControlLogic();
 
-                if (Input.GetKeyUp(KeyCode.U)) {
-                    SwitchToGameMenu();
-                }
+                //if (Input.GetKeyUp(KeyCode.U)) {
+                //    SwitchToGameMenu();
+                //}
                 break;
             case PlayerControlState.Menu:
                 GameMenuLogic();
 
-                if (Input.GetKeyUp(KeyCode.U)) {
-                    if (thisPlayerControlState == PlayerControlState.Menu)
-                    {
-                        SwitchToGamePlay();
-                    }
-                    else if (thisPlayerControlState == PlayerControlState.EquipMenu || thisPlayerControlState == PlayerControlState.WeaponMenu) {
-                        SwitchToGameMenu();
-                    }
-                }
+                //if (Input.GetKeyUp(KeyCode.U)) {
+                //    if (thisPlayerControlState == PlayerControlState.Menu)
+                 //   {
+                 //       SwitchToGamePlay();
+                //    }
+                //    else if (thisPlayerControlState == PlayerControlState.EquipMenu || thisPlayerControlState == PlayerControlState.WeaponMenu) {
+                //        SwitchToGameMenu();
+               //     }
+                //}
                 break;
             case PlayerControlState.Radio:
                 GameMenuLogic();
 
-                if (Input.GetKey(KeyCode.U)) {
-                    SwitchToGameMenu();
-                }
+                //if (Input.GetKey(KeyCode.U)) {
+                //    SwitchToGameMenu();
+                //}
                 break;
         }
     }
@@ -110,14 +116,14 @@ public class GameplayManager : MonoBehaviour {
 
     IEnumerator GameScript()
     {
-        pc.GetComponent<CharInventory>().weapons.Add(new Weapon("SOCOM MK2", WeaponType.ranged, WeaponKind.USP, 5, AmmoType.Nine));
+        pc.GetComponent<CharInventory>().weapons.Add(new Weapon("SOCOM MK2", 35, 5, AmmoType.Nine));
         thisPlayerControlState = PlayerControlState.Player;
 
         yield return new WaitForSeconds(3f);
 
         mm.radioConversationAvailable = true;
         mm.radiosWithDialogue.Add(120.85f, 01f);
-        mm.radioValue = 120.85f;
+        mm.transceiverFreq = 120.85f;
 
         while (true)
         {
@@ -146,6 +152,8 @@ public class GameplayManager : MonoBehaviour {
             yield return new WaitForEndOfFrame();
         }
     }
+
+    
 }
 
 public enum PlayerControlState

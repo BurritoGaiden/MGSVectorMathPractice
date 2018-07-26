@@ -67,7 +67,7 @@ public class DebugUIManager : MonoBehaviour {
 
         //--------------------
 
-        transceiverDebug = "Radio Freq: " + GetComponent<MenuManager>().radioValue;
+        transceiverDebug = "Radio Freq: " + GetComponent<MenuManager>().transceiverFreq;
         if (GetComponent<MenuManager>().inConvo) {
             transceiverDebug += "\n" + GetComponent<MenuManager>().textList[GetComponent<MenuManager>().currentTextLine];
         }

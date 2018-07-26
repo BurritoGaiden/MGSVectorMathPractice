@@ -10,6 +10,7 @@ public class CharController : MonoBehaviour {
     public bool left, up, right, down;
 
     CharacterController controller;
+    public GameObject animRefObject;
 
 	// Use this for initialization
 	void Start () {
@@ -18,6 +19,10 @@ public class CharController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+
+        if (GetComponent<CharInventory>().weaponCoolDown != GetComponent<CharInventory>().weaponWaitTime)
+            return;
+
         //Get Player Input
         InputLogic();
         
@@ -31,7 +36,10 @@ public class CharController : MonoBehaviour {
             transform.eulerAngles = Vector3.up * Mathf.Atan2(inputDir.x, inputDir.z) * Mathf.Rad2Deg;
         }
 
+        
         MovementLogic(inputDir);
+
+ 
 	}
 
     void InputLogic() {
